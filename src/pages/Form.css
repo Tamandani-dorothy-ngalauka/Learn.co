@@ -1,0 +1,98 @@
+/* Full screen */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Main container */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* LEFT SIDE (FORM) */
+.form-section {
+  flex: 1;
+  background: white;
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+}
+
+.form-section h2 {
+  font-size: 28px;
+  color: blueviolet;
+}
+
+.form-section p {
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.form-section input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #555;
+  color: black;
+  outline: none;
+}
+
+.form-section button {
+  margin-top: 20px;
+  padding: 12px;
+  background: linear-gradient(to right, #7b3fe4, #a56eff);
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.form-section button:hover {
+  opacity: 0.9;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.signUp{
+    display: flex;
+    margin-top: 80px;
+}
+.signUp button{
+    margin-bottom: 60px;
+}
+
+/* RIGHT SIDE (DESIGN PANEL) */
+.image-section {
+  flex: 1;
+  background: linear-gradient(135deg, #7b3fe4, #a56eff);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+    border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.image-section h1 {
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+.image-section p {
+  margin-top: 10px;
+  color: #eee;
+}
+.image-section img{
+    height: 300px;
+    width: 300px;
+    margin-left: 150px;
+}
