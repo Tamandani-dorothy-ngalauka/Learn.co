@@ -8,6 +8,7 @@ const studentRoutes = require("./routes/studentRoutes");
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
+console.log("SERVER STARTED");
 const app = express();
 
 // ======================
