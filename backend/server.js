@@ -8,11 +8,12 @@ const studentRoutes = require("./routes/studentRoutes");
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
-console.log("SERVER STARTED");
 const app = express();
 
+console.log("SERVER STARTED");
+
 // ======================
-// TEST ROUTE (KEEP AT TOP)
+// TEST ROUTE
 // ======================
 app.get("/", (req, res) => {
   res.send("Backend server is running");
@@ -21,10 +22,7 @@ app.get("/", (req, res) => {
 // ======================
 // MIDDLEWARE
 // ======================
-app.use(cors({
-  origin: "*"
-}));
-
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // ======================
@@ -39,24 +37,24 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // ======================
-// ROUTES
+// ROUTES (FIXED HERE)
 // ======================
-app.use("/api", studentRoutes);
-app.use("/api", authRoutes);
-app.use("/api", contactRoutes);
+app.use("/api/students", studentRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/contact", contactRoutes);
 
 // ======================
-// SERVER START (START FIRST)
-// ======================
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-// ======================
-// DATABASE CONNECTION (AFTER SERVER START)
+// DATABASE CONNECTION
 // ======================
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error("DB Error:", err));
+
+// ======================
+// SERVER START
+// ======================
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
