@@ -6,6 +6,7 @@ const Student = require("../models/student");
 console.log("BODY:", req.body);
 console.log("EMAIL:", req.body?.email);
 console.log("PASSWORD:", req.body?.password);
+console.log("REGISTER BODY:", req.body);
 
 router.post("/register", async (req, res) => {
   try {
