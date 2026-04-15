@@ -1,4 +1,6 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import { createHashRouter, RouterProvider } from "react-router-dom";
+
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -9,36 +11,25 @@ import Signup from "./pages/Signup";
 import CourseDetails from "./pages/CourseDetails";
 import MyCourses from "./pages/MyCourses";
 
-
-const router = createBrowserRouter(
-  [
-    {
-    path:"/",
-    element:<Layout />,
-    children : [
-{path:"", element:<Home />},
-{path:"about", element:<About />},
-{path:"courses", element:<Courses />},
- { path: "courses/:id", element: <CourseDetails /> }, 
-{path:"contact", element:<Contact />},
-{path:"login", element:<Login />},
-{path:"signup", element:<Signup />},
-{path:"my-courses", element:<MyCourses />}
-
-    ],
-  },
+const router = createHashRouter([
   {
-  path: "/courses/:id",
-  element: <CourseDetails />
-},
+    path: "/",
+    element: <Layout />,
+    children: [
+      { path: "", element: <Home /> },
+      { path: "about", element: <About /> },
+      { path: "courses", element: <Courses /> },
+      { path: "courses/:id", element: <CourseDetails /> },
+      { path: "contact", element: <Contact /> },
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <Signup /> },
+      { path: "my-courses", element: <MyCourses /> }
+    ],
+  }
+]);
 
-  ],
-)
-
-
-function App(){
-  return <RouterProvider router={router}/>
-   
+function App() {
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
