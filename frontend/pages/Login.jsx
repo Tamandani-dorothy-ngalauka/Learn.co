@@ -63,12 +63,32 @@ export default function Login() {
     }
   }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input name="email" onChange={handleChange} placeholder="Email" />
-      <input name="password" type="password" onChange={handleChange} placeholder="Password" />
-      <button type="submit">Login</button>
-      {error && <p>{error}</p>}
-    </form>
-  );
+ return (
+  <div className="signup">
+    <div className="signup-card">
+      <h2>Login</h2>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          name="email"
+          onChange={handleChange}
+          placeholder="Email"
+          value={formData.email}
+        />
+
+        <input
+          name="password"
+          type="password"
+          onChange={handleChange}
+          placeholder="Password"
+          value={formData.password}
+        />
+
+        <button type="submit">Login</button>
+
+        {error && <p className="error">{error}</p>}
+      </form>
+    </div>
+  </div>
+);
 }

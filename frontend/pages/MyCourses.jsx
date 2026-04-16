@@ -9,7 +9,7 @@ export default function MyCourses() {
 
     const student = JSON.parse(localStorage.getItem("user"));
 
-    fetch(`"https://satisfied-adaptation-production-cf47.up.railway.app/api/students/${student._id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/students/${student._id}`)
       .then(res => res.json())
       .then(data => {
 
@@ -24,14 +24,22 @@ export default function MyCourses() {
   }, []);
 
   return (
-    <div>
-      <h1>My Courses</h1>
+  <div className="courses-page">
+    <h1>My Courses</h1>
 
+    <div className="courses-container">
       {myCourses.map(course => (
-        <div key={course.id}>
-          <h3>{course.title}</h3>
+        <div className="course-card" key={course.id}>
+          <img src={course.image} alt={course.title} />
+          
+          <div className="course-content">
+            <h3>{course.title}</h3>
+            <p>{course.description}</p>
+            <button className="enroll-btn">Continue</button>
+          </div>
         </div>
       ))}
     </div>
-  );
+  </div>
+);
 }

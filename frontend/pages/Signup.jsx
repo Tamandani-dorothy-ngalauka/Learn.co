@@ -80,16 +80,48 @@ export default function Signup() {
     }
   }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" placeholder="Name" onChange={handleChange} value={formData.name} />
-      <input name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
-      <input name="password" type="password" placeholder="Password" onChange={handleChange} value={formData.password} />
-      <input name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleChange} value={formData.confirmPassword} />
-      <button type="submit">Sign Up</button>
+ return (
+  <div className="signup">
+    <div className="signup-card">
+      <h2>Create Account</h2>
 
-      {error && <p>{error}</p>}
-      {success && <p>{success}</p>}
-    </form>
-  );
+      <form onSubmit={handleSubmit}>
+        <input
+          name="name"
+          placeholder="Full Name"
+          onChange={handleChange}
+          value={formData.name}
+        />
+
+        <input
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+          value={formData.email}
+        />
+
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleChange}
+          value={formData.password}
+        />
+
+        <input
+          name="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          onChange={handleChange}
+          value={formData.confirmPassword}
+        />
+
+        <button type="submit">Sign Up</button>
+
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
+      </form>
+    </div>
+  </div>
+);
 }
