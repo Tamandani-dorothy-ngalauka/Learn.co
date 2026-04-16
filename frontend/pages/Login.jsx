@@ -12,16 +12,19 @@ async function handleSubmit(e) {
   }
 
   try {
-    const response = await fetch(
-      "https://satisfied-adaptation-production-cf47.up.railway.app", // ✅ FIXED
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      }
-    );
+   const response = await fetch(
+  "https://satisfied-adaptation-production-cf47.up.railway.app/api/auth/login",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: formData.email,
+      password: formData.password
+    })
+  }
+);
 
     const data = await response.json();
 

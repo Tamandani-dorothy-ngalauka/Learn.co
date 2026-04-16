@@ -33,14 +33,16 @@ async function handleSubmit(e) {
 
   try {
 
-    const response = await fetch("https://satisfied-adaptation-production-cf47.up.railway.app", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
-    });
-
+    const response = await fetch(
+  "https://satisfied-adaptation-production-cf47.up.railway.app/api/contact/contact",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  }
+);
     const data = await response.json();
 
     if (response.ok) {
