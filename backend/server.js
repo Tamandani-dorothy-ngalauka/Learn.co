@@ -4,7 +4,7 @@ const rateLimit = require("express-rate-limit");
 const cors = require("cors");
 require("dotenv").config();
 
-const app = express(); // ✅ MUST come before using app
+const app = express();
 
 console.log("SERVER STARTED");
 
@@ -12,12 +12,12 @@ console.log("SERVER STARTED");
 // CORS (FIXED)
 // ======================
 app.use(cors({
-  origin: "*",   // for submission (allow all)
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.options("*", cors()); // ✅ fix preflight
+// ❌ REMOVED app.options("*", cors());
 
 // ======================
 // MIDDLEWARE
