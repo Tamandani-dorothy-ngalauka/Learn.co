@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 export default function Signup() {
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,6 +21,10 @@ export default function Signup() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    setError("");
+    setSuccess("");
+
+    // VALIDATION
     if (!formData.email.includes("@")) {
       setError("Invalid email");
       return;
@@ -38,18 +41,20 @@ export default function Signup() {
     }
 
     try {
-
-      const response = await fetch("https://satisfied-adaptation-production-cf47.up.railway.app/api/auth/register", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    name,
-    email,
-    password
-  })
-});
+      const response = await fetch(
+        "https://satisfied-adaptation-production-cf47.up.railway.app/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password
+          })
+        }
+      );
 
       const data = await response.json();
 
@@ -64,24 +69,21 @@ export default function Signup() {
           password: "",
           confirmPassword: ""
         });
-
       } else {
-        setError(data.message);
+        setError(data.message || "Registration failed");
       }
-
     } catch (error) {
-      setError("Server error");
+      console.error("Signup error:", error);
+      setError("Unable to connect to server. Please try again.");
     }
   }
 
   return (
     <div className="signup">
-
       <div className="signup-card">
         <h2>Create Account</h2>
 
         <form onSubmit={handleSubmit}>
-
           <input
             type="text"
             name="name"
@@ -122,11 +124,8 @@ export default function Signup() {
 
           {error && <p className="error">{error}</p>}
           {success && <p className="success">{success}</p>}
-
         </form>
       </div>
-
     </div>
   );
 }
-
