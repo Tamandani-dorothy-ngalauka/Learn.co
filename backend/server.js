@@ -8,23 +8,17 @@ const app = express();
 
 console.log("SERVER STARTED");
 
+// ✅ Required for Railway
 app.set("trust proxy", 1);
 
 // ======================
-// CORS (FIXED)
+// CORS (SIMPLIFIED + SAFE)
 // ======================
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
-// ❌ REMOVED app.options("*", cors());
+app.use(cors());
 
 // ======================
 // MIDDLEWARE
 // ======================
-
 app.use(express.json());
 
 // ======================
@@ -32,8 +26,7 @@ app.use(express.json());
 // ======================
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: "Too many requests, please try again later."
+  max: 100
 });
 
 app.use("/api", limiter);
@@ -57,7 +50,7 @@ app.get("/", (req, res) => {
 });
 
 // ======================
-// DATABASE CONNECTION
+// DATABASE
 // ======================
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))

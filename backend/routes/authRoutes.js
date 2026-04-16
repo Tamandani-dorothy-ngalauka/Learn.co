@@ -1,34 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-
 const Student = require("../models/student");
-
 
 // ======================
 // REGISTER ROUTE
 // ======================
 router.post("/register", async (req, res) => {
-
   try {
-
     const { name, email, password } = req.body;
 
-    // check fields
+    // ✅ Validate input (prevents crashes)
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "All fields are required"
       });
     }
 
-    // check if user exists
-const user = await Student.findOne({
-  email: email.toLowerCase()
-});
+    const normalizedEmail = email.toLowerCase();
 
-const existingUser = await Student.findOne({
-  email: email.toLowerCase()
-});
+    const existingUser = await Student.findOne({
+      email: normalizedEmail
+    });
 
     if (existingUser) {
       return res.status(400).json({
@@ -36,32 +28,28 @@ const existingUser = await Student.findOne({
       });
     }
 
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // create user
     const newUser = new Student({
       name,
-      email,
-      password: hashedPassword
+      email: normalizedEmail,
+      password
     });
 
     await newUser.save();
 
-    res.status(201).json({
+    // ✅ Always send clean JSON
+    return res.status(201).json({
+      success: true,
       message: "User registered successfully"
     });
 
   } catch (error) {
+    console.error("REGISTER ERROR:", error);
 
-    console.log(error);
-
-    res.status(500).json({
-      message: "Server error"
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Server error"
     });
-
   }
-
 });
 
 
@@ -72,28 +60,46 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password required"
+      });
+    }
+
+    const normalizedEmail = email.toLowerCase();
+
     const user = await Student.findOne({
-      email: email.toLowerCase()
+      email: normalizedEmail
     });
 
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(401).json({
+        message: "User not found"
+      });
     }
 
     const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid password" });
+      return res.status(401).json({
+        message: "Invalid password"
+      });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
+      success: true,
       message: "Login successful",
       user
     });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("LOGIN ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 });
+
 module.exports = router;
