@@ -23,19 +23,8 @@ export default function Signup() {
     setError("");
     setSuccess("");
 
-    if (!formData.email.includes("@")) {
-      setError("Invalid email");
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
+      return setError("Passwords do not match");
     }
 
     try {
@@ -43,30 +32,16 @@ export default function Signup() {
         `${import.meta.env.VITE_API_URL}/api/auth/register`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email.toLowerCase(),
-            password: formData.password
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
         }
       );
 
-      // ✅ SAFE JSON PARSE (IMPORTANT FIX)
-      let data;
-      try {
-        data = await response.json();
-      } catch {
-        throw new Error("Invalid server response");
-      }
+      const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
-      }
+      if (!response.ok) throw new Error(data.message);
 
-      setSuccess("Account created successfully!");
+      setSuccess("Account created successfully");
       setFormData({
         name: "",
         email: "",
@@ -74,56 +49,28 @@ export default function Signup() {
         confirmPassword: ""
       });
 
-    } catch (error) {
-      console.error("Signup error:", error);
-      setError(error.message || "Server error");
+    } catch (err) {
+      setError(err.message);
     }
   }
 
- return (
-  <div className="signup">
-    <div className="signup-card">
-      <h2>Create Account</h2>
+  return (
+    <div className="page signup">
+      <div className="signup-card">
+        <h2>Create Account</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit}>
+          <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} />
+          <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+          <input type="password" name="password" placeholder="Password" onChange={handleChange} />
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-        />
+          <button type="submit">Sign Up</button>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
-
-        <button type="submit">Sign Up</button>
-
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
-      </form>
+          {error && <p className="error">{error}</p>}
+          {success && <p className="success">{success}</p>}
+        </form>
+      </div>
     </div>
-  </div>
-);
+  );
 }

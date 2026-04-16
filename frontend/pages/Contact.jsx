@@ -20,100 +20,60 @@ export default function Contact() {
     e.preventDefault();
     setStatus("");
 
-    if (!formData.email.includes("@")) {
-      setStatus("Please enter a valid email.");
-      return;
-    }
-
-    if (formData.message.length < 5) {
-      setStatus("Message is too short.");
-      return;
-    }
-
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/contact/contact`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData)
         }
       );
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to send message");
-      }
+      if (!response.ok) throw new Error(data.message);
 
       setStatus("Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });
 
-    } catch (error) {
-      console.error("Contact error:", error);
-      setStatus(error.message || "Server error");
+    } catch (err) {
+      setStatus(err.message);
     }
   }
 
-return (
-  <div className="contact">
+  return (
+    <div className="page">
 
-    {/* HERO SECTION */}
-    <section className="contact-hero">
-      <h1>Contact Us</h1>
-      <p>We’d love to hear from you. Get in touch with us!</p>
-    </section>
+      <section className="contact-hero">
+        <div className="container">
+          <h1>Contact Us</h1>
+          <p>We’d love to hear from you</p>
+        </div>
+      </section>
 
-    {/* MAIN CONTAINER */}
-    <section className="contact-container">
+      <section className="container contact-container">
 
-      {/* FORM */}
-      <form className="contact-form" onSubmit={handleSubmit}>
-        <h2>Send a Message</h2>
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <h2>Send a Message</h2>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          onChange={handleChange}
-          value={formData.name}
-          required
-        />
+          <input name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} />
+          <input name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} />
+          <textarea name="message" rows="5" placeholder="Message" value={formData.message} onChange={handleChange} />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          onChange={handleChange}
-          value={formData.email}
-          required
-        />
+          <button type="submit">Send Message</button>
 
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          rows="5"
-          onChange={handleChange}
-          value={formData.message}
-          required
-        ></textarea>
+          {status && <p className="success">{status}</p>}
+        </form>
 
-        <button type="submit">Send Message</button>
+        <div className="contact-info">
+          <h2>Contact Info</h2>
+          <p>Email: support@learn.co</p>
+          <p>Phone: +123 456 7890</p>
+          <p>Location: Online Platform</p>
+        </div>
 
-        {status && <p className="status">{status}</p>}
-      </form>
-
-      {/* CONTACT INFO */}
-      <div className="contact-info">
-        <h2>Contact Information</h2>
-        <p>📧 Email: support@learn.co</p>
-        <p>📞 Phone: +123 456 7890</p>
-        <p>📍 Location: Online Platform</p>
-      </div>
-
-    </section>
-  </div>
-);
+      </section>
+    </div>
+  );
 }

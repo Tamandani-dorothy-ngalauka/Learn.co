@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -22,73 +21,45 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    if (!formData.email.includes("@")) {
-      setError("Invalid Email");
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password is too short!");
-      return;
-    }
-
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
         }
       );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message);
       }
 
       localStorage.setItem("user", JSON.stringify(data.user));
-
-      alert("Login successful!");
+      alert("Login successful");
       navigate("/my-courses");
 
     } catch (err) {
-      console.error("Login error:", err);
-      setError(err.message || "Server connection failed");
+      setError(err.message || "Server error");
     }
   }
 
- return (
-  <div className="signup">
-    <div className="signup-card">
-      <h2>Login</h2>
+  return (
+    <div className="page signup">
+      <div className="signup-card">
+        <h2>Login</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit}>
+          <input type="email" name="email" placeholder="Email" onChange={handleChange} />
+          <input type="password" name="password" placeholder="Password" onChange={handleChange} />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
+          <button type="submit">Login</button>
 
-        <button type="submit">Login</button>
-
-        {error && <p className="error">{error}</p>}
-      </form>
+          {error && <p className="error">{error}</p>}
+        </form>
+      </div>
     </div>
-  </div>
-);
+  );
 }
