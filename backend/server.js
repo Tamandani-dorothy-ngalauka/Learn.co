@@ -8,6 +8,8 @@ const app = express();
 
 console.log("SERVER STARTED");
 
+app.set("trust proxy", 1);
+
 // ======================
 // CORS (FIXED)
 // ======================
@@ -22,6 +24,7 @@ app.use(cors({
 // ======================
 // MIDDLEWARE
 // ======================
+
 app.use(express.json());
 
 // ======================
