@@ -1,15 +1,15 @@
 
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
-import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Courses from "./pages/Courses";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import CourseDetails from "./pages/CourseDetails";
-import MyCourses from "./pages/MyCourses";
+import Layout from "../components/Layout";
+import Home from "../pages/Home";
+import About from "../pages/About";
+import Courses from "../pages/Courses";
+import Contact from "../pages/Contact";
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
+import CourseDetails from "../pages/CourseDetails";
+import MyCourses from "../pages/MyCourses";
 
 const router = createHashRouter([
   {

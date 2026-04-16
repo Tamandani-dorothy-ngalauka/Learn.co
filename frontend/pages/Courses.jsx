@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { courses } from "../data/CoursesData";
+import { courses } from "../../frontend/data/CoursesData";
 import { CourseContext } from "../context/CourseContext";
 
 export default function Courses() {

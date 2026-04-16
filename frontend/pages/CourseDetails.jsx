@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { courses } from "../data/CoursesData";
+import { courses } from "../../frontend/data/CoursesData";
 import { useContext } from "react";
 import { CourseContext } from "../context/CourseContext";
 
