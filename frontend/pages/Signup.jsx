@@ -20,11 +20,9 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     setError("");
     setSuccess("");
 
-    // VALIDATION
     if (!formData.email.includes("@")) {
       setError("Invalid email");
       return;
@@ -41,91 +39,57 @@ export default function Signup() {
     }
 
     try {
-     const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/auth/register`,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    })
-  }
-);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email.toLowerCase(),
+            password: formData.password
+          })
+        }
+      );
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess("Account created successfully!");
-        setError("");
-
-        // clear form
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: ""
-        });
-      } else {
-        setError(data.message || "Registration failed");
+      // ✅ SAFE JSON PARSE (IMPORTANT FIX)
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Invalid server response");
       }
+
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      setSuccess("Account created successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+      });
+
     } catch (error) {
       console.error("Signup error:", error);
-      setError("Unable to connect to server. Please try again.");
+      setError(error.message || "Server error");
     }
   }
 
   return (
-    <div className="signup">
-      <div className="signup-card">
-        <h2>Create Account</h2>
+    <form onSubmit={handleSubmit}>
+      <input name="name" placeholder="Name" onChange={handleChange} value={formData.name} />
+      <input name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
+      <input name="password" type="password" placeholder="Password" onChange={handleChange} value={formData.password} />
+      <input name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleChange} value={formData.confirmPassword} />
+      <button type="submit">Sign Up</button>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-
-          <button type="submit">Sign Up</button>
-
-          {error && <p className="error">{error}</p>}
-          {success && <p className="success">{success}</p>}
-        </form>
-      </div>
-    </div>
+      {error && <p>{error}</p>}
+      {success && <p>{success}</p>}
+    </form>
   );
 }

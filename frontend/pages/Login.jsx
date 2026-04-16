@@ -1,45 +1,74 @@
-async function handleSubmit(e) {
-  e.preventDefault();
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-  if (!formData.email.includes("@")) {
-    setError("Invalid Email");
-    return;
+export default function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   }
 
-  if (formData.password.length < 6) {
-    setError("Password is too short!");
-    return;
-  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
 
-  try {
-  const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/auth/login`,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email: formData.email,
-      password: formData.password
-    })
-  }
-);
+    if (!formData.email.includes("@")) {
+      setError("Invalid Email");
+      return;
+    }
 
-    const data = await response.json();
+    if (formData.password.length < 6) {
+      setError("Password is too short!");
+      return;
+    }
 
-    if (response.ok) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
       localStorage.setItem("user", JSON.stringify(data.user));
 
       alert("Login successful!");
-
       navigate("/my-courses");
-    } else {
-      setError(data.message || "Login failed");
-    }
 
-  } catch (err) {
-    console.error(err); // helps debugging
-    setError("Server connection failed");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.message || "Server connection failed");
+    }
   }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="email" onChange={handleChange} placeholder="Email" />
+      <input name="password" type="password" onChange={handleChange} placeholder="Password" />
+      <button type="submit">Login</button>
+      {error && <p>{error}</p>}
+    </form>
+  );
 }
