@@ -9,7 +9,7 @@ export default function MyCourses() {
 
     const student = JSON.parse(localStorage.getItem("user"));
 
-    fetch(`http://localhost:3000/api/students/${student._id}`)
+    fetch(`"https://satisfied-adaptation-production-cf47.up.railway.app/api/students/${student._id}`)
       .then(res => res.json())
       .then(data => {
 

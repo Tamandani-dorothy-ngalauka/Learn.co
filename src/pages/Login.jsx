@@ -13,7 +13,7 @@ async function handleSubmit(e) {
 
   try {
     const response = await fetch(
-      "https://learnco-production.up.railway.app/api/login", // ✅ FIXED
+      "https://satisfied-adaptation-production-cf47.up.railway.app", // ✅ FIXED
       {
         method: "POST",
         headers: {

@@ -33,7 +33,7 @@ async function handleSubmit(e) {
 
   try {
 
-    const response = await fetch("http://localhost:3000/api/contact", {
+    const response = await fetch("https://satisfied-adaptation-production-cf47.up.railway.app", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
