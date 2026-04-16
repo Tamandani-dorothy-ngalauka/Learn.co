@@ -1,39 +1,27 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const rateLimit = require("express-rate-limit");
+const cors = require("cors");
 require("dotenv").config();
 
-const cors = require("cors");
-
-app.use(cors({
-  origin: "*",   // quick fix for submission
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
-app.options("*", cors());
-
-const studentRoutes = require("./routes/studentRoutes");
-const authRoutes = require("./routes/authRoutes");
-const contactRoutes = require("./routes/contactRoutes");
-
-const app = express();
+const app = express(); // ✅ MUST come before using app
 
 console.log("SERVER STARTED");
 
 // ======================
-// TEST ROUTE
+// CORS (FIXED)
 // ======================
-app.get("/", (req, res) => {
-  res.send("Backend server is running");
-});
+app.use(cors({
+  origin: "*",   // for submission (allow all)
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.options("*", cors()); // ✅ fix preflight
 
 // ======================
 // MIDDLEWARE
 // ======================
-app.use(cors({ origin: "https://tamandani-dorothy-ngalauka.github.io/Learn.co/",
-   credentials: true
- }));
 app.use(express.json());
 
 // ======================
@@ -48,11 +36,22 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // ======================
-// ROUTES (FIXED HERE)
+// ROUTES
 // ======================
+const studentRoutes = require("./routes/studentRoutes");
+const authRoutes = require("./routes/authRoutes");
+const contactRoutes = require("./routes/contactRoutes");
+
 app.use("/api/students", studentRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
+
+// ======================
+// TEST ROUTE
+// ======================
+app.get("/", (req, res) => {
+  res.send("Backend server is running");
+});
 
 // ======================
 // DATABASE CONNECTION
@@ -65,4 +64,4 @@ mongoose.connect(process.env.MONGO_URI)
 // SERVER START
 // ======================
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("Server running"));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
