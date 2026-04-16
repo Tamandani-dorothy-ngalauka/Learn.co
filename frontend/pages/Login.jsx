@@ -71,18 +71,17 @@ export default function Login() {
 
       <form onSubmit={handleSubmit}>
         <input
+          type="email"
           name="email"
-          onChange={handleChange}
           placeholder="Email"
-          value={formData.email}
+          onChange={handleChange}
         />
 
         <input
-          name="password"
           type="password"
-          onChange={handleChange}
+          name="password"
           placeholder="Password"
-          value={formData.password}
+          onChange={handleChange}
         />
 
         <button type="submit">Login</button>

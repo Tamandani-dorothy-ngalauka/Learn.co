@@ -87,33 +87,35 @@ export default function Signup() {
 
       <form onSubmit={handleSubmit}>
         <input
+          type="text"
           name="name"
           placeholder="Full Name"
-          onChange={handleChange}
           value={formData.name}
+          onChange={handleChange}
         />
 
         <input
+          type="email"
           name="email"
           placeholder="Email"
-          onChange={handleChange}
           value={formData.email}
+          onChange={handleChange}
         />
 
         <input
+          type="password"
           name="password"
-          type="password"
           placeholder="Password"
-          onChange={handleChange}
           value={formData.password}
+          onChange={handleChange}
         />
 
         <input
-          name="confirmPassword"
           type="password"
+          name="confirmPassword"
           placeholder="Confirm Password"
-          onChange={handleChange}
           value={formData.confirmPassword}
+          onChange={handleChange}
         />
 
         <button type="submit">Sign Up</button>

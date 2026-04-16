@@ -31,11 +31,9 @@ export default function MyCourses() {
       {myCourses.map(course => (
         <div className="course-card" key={course.id}>
           <img src={course.image} alt={course.title} />
-          
           <div className="course-content">
             <h3>{course.title}</h3>
             <p>{course.description}</p>
-            <button className="enroll-btn">Continue</button>
           </div>
         </div>
       ))}
