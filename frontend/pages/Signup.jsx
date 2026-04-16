@@ -41,20 +41,20 @@ export default function Signup() {
     }
 
     try {
-      const response = await fetch(
-        "https://satisfied-adaptation-production-cf47.up.railway.app/api/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            password: formData.password
-          })
-        }
-      );
+     const response = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/auth/register`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password
+    })
+  }
+);
 
       const data = await response.json();
 

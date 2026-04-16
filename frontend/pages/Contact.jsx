@@ -34,7 +34,7 @@ async function handleSubmit(e) {
   try {
 
     const response = await fetch(
-  "https://satisfied-adaptation-production-cf47.up.railway.app/api/contact/contact",
+  `${import.meta.env.VITE_API_URL}/api/contact/contact`,
   {
     method: "POST",
     headers: {

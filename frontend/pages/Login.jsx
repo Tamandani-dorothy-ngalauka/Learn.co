@@ -12,8 +12,8 @@ async function handleSubmit(e) {
   }
 
   try {
-   const response = await fetch(
-  "https://satisfied-adaptation-production-cf47.up.railway.app/api/auth/login",
+  const response = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/auth/login`,
   {
     method: "POST",
     headers: {
