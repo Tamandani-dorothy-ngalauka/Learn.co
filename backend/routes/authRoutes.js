@@ -26,6 +26,9 @@ const user = await Student.findOne({
   email: email.toLowerCase()
 });
 
+const existingUser = await Student.findOne({
+  email: email.toLowerCase()
+});
 
     if (existingUser) {
       return res.status(400).json({
