@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Form.css";
 import login from "../pictures/login.png";
 
 export default function Login() {
