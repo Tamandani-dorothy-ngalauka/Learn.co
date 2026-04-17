@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import login from "../pictures/login.png";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ export default function Login() {
       navigate("/my-courses");
 
     } catch (err) {
-      setError(err.message || "Server error");
+      setError(err?.message || "Server error");
     }
   }
 
