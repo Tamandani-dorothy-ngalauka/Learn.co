@@ -5,46 +5,44 @@ export default function Courses() {
   const navigate = useNavigate();
 
   // 🔥 ENROLL FUNCTION
-  async function handleEnroll(course, e) {
-    e.preventDefault(); // ❌ stops Link navigation
-    e.stopPropagation();
+ async function handleEnroll(course, e) {
+  e.preventDefault();
+  e.stopPropagation();
 
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-      if (!user) {
-        alert("Please login first");
-        navigate("/login");
-        return;
-      }
-
-      // ✅ Send to backend (recommended)
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/enroll`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user._id,
-            courseId: course.id,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
-      alert("Enrolled successfully!");
-    } catch (err) {
-      console.log(err);
-      alert("Enrollment failed");
+    if (!user) {
+      alert("Please login first");
+      return;
     }
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/students/enroll`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          courseId: course.id
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Enrollment failed");
+    }
+
+    alert("Enrolled successfully!");
+  } catch (err) {
+    console.log(err);
+    alert(err.message);
   }
+}
 
   return (
     <div className="courses-page">
