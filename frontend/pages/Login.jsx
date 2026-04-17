@@ -46,20 +46,46 @@ export default function Login() {
     }
   }
 
-  return (
-    <div className="page signup">
-      <div className="signup-card">
+ return (
+    <div className="container">
+
+      {/* LEFT SIDE */}
+      <div className="form-section">
         <h2>Login</h2>
+        <p>Enter your account details</p>
 
         <form onSubmit={handleSubmit}>
-          <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-          <input type="password" name="password" placeholder="Password" onChange={handleChange} />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            required
+          />
 
           <button type="submit">Login</button>
 
           {error && <p className="error">{error}</p>}
+
         </form>
       </div>
+
+      {/* RIGHT SIDE */}
+      <div className="image-section">
+        <h1>Welcome to<br />student portal</h1>
+        <p>Login to access your account</p>
+        <img src={login} alt="login" />
+      </div>
+
     </div>
   );
 }

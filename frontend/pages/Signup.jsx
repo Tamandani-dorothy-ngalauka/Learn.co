@@ -55,22 +55,57 @@ export default function Signup() {
   }
 
   return (
-    <div className="page signup">
+    <div className="signup">
+
       <div className="signup-card">
         <h2>Create Account</h2>
 
         <form onSubmit={handleSubmit}>
-          <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} />
-          <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
-          <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-          <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} />
+
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
 
           <button type="submit">Sign Up</button>
 
           {error && <p className="error">{error}</p>}
           {success && <p className="success">{success}</p>}
+
         </form>
       </div>
+
     </div>
   );
 }
