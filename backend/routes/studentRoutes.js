@@ -2,59 +2,54 @@ const express = require("express");
 const router = express.Router();
 const Student = require("../models/student");
 
-// ======================
-// TEST ROUTE
-// ======================
-router.get("/", (req, res) => {
-  res.send("Students API working");
-});
 
 // ======================
-// CREATE STUDENT
+// GET STUDENT BY ID
 // ======================
-router.post("/add", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const student = new Student(req.body);
-    await student.save();
-    res.json({ message: "Student Added", student });
-  } catch (error) {
-    res.status(500).json({ message: "Error adding student", error });
+    const user = await Student.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-// ======================
-// GET ALL STUDENTS
-// ======================
-router.get("/all", async (req, res) => {
-  try {
-    const students = await Student.find();
-    res.json(students);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching students" });
-  }
-});
 
 // ======================
-// UPDATE STUDENT
+// ENROLL COURSE
 // ======================
-router.put("/update/:id", async (req, res) => {
+router.post("/enroll", async (req, res) => {
   try {
-    await Student.findByIdAndUpdate(req.params.id, req.body);
-    res.json({ message: "Student Updated" });
-  } catch (error) {
-    res.status(500).json({ message: "Error updating student" });
-  }
-});
+    const { userId, courseId } = req.body;
 
-// ======================
-// DELETE STUDENT
-// ======================
-router.delete("/delete/:id", async (req, res) => {
-  try {
-    await Student.findByIdAndDelete(req.params.id);
-    res.json({ message: "Student Deleted" });
-  } catch (error) {
-    res.status(500).json({ message: "Error deleting student" });
+    const user = await Student.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.enrolledCourses.includes(courseId)) {
+      return res.status(400).json({ message: "Already enrolled" });
+    }
+
+    user.enrolledCourses.push(courseId);
+
+    await user.save();
+
+    res.json({
+      success: true,
+      enrolledCourses: user.enrolledCourses
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 
